@@ -4,13 +4,15 @@
 ;;;;
 ;;;; Author: bowbow99 <bowbow99@gmail.com>
 ;;;; Created: 2009-08-11 13:59:55
-;;;; Updated: 2009-08-11 17:29:17
+;;;; Updated: 2009-08-11 18:42:09
 ;;;;
 
 
 (in-package "editor")
 
 (export '(*lisp-indent-hook*))
+
+(defconstant +lisp-indent-hook-version+ "0.01.00")
 
 (defvar *lisp-indent-hook* nil
   "*Hook for modifying indentation for specific case.
@@ -95,4 +97,5 @@ to see more example, check sample configs under lisp-indent-hook folder.
             (nth-arg (info) (fourth info)))
      ,@body))
 
+(provide "lisp-indent-hook")
 ;;;; lisp-indent-hook ends here
