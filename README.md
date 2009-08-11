@@ -5,21 +5,21 @@ lisp-mode などでインデントを計算する calc-lisp-indent に hook を�
 ===============
 netinstaller でインストール後、初期化ファイルにて読み込む。
 
-   (require "lisp-indent-hook")
+    (require "lisp-indent-hook")
 
 
 設定する #1: 付属の設定を使う
 ===============================
 <xyzzy>/site-lisp/lisp-indent-hook/ 以下に付属の設定があるので、それを使う場合は読み込むだけでおｋ。
 
-   (require "lisp-indent-hook/flet-like")
+    (require "lisp-indent-hook/flet-like")
 
 
 設定する #2: 独自のインデント計算を追加
 =========================================
 フック変数 \*lisp-indent-hook\* に、特定の場合にインデントを計算する関数を追加します。
 
-   (add-hook '\*lisp-indent-hook\* 'my-calc-indent)
+    (add-hook '*lisp-indent-hook* 'my-calc-indent)
 
 この関数は
 
