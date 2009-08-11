@@ -1,5 +1,3 @@
-lisp-indent-hook
-
 lisp-mode などでインデントを計算する calc-lisp-indent に hook を追加することで、特定の場合にインデントを変更できるようにするもの。
 
 
@@ -19,9 +17,9 @@ netinstaller でインストール後、初期化ファイルにて読み込む�
 
 設定する #2: 独自のインデント計算を追加
 =========================================
-フック変数 *lisp-indent-hook* に、特定の場合にインデントを計算する関数を追加します。
+フック変数 \*lisp-indent-hook\* に、特定の場合にインデントを計算する関数を追加します。
 
-   (add-hook '*lisp-indent-hook* 'my-calc-indent)
+   (add-hook '\*lisp-indent-hook\* 'my-calc-indent)
 
 この関数は
 
@@ -45,36 +43,45 @@ EXAMPLE:
     (defun example (arg)
       (let (foo bar baz)
         (if (find arg *some-list*)
-          *
+            *
+          )))
 
-という状態で、* の位置から得られる周辺の情報は以下のようなもの。
+という状態で、* の位置から得られる周辺の情報は以下のようなもの。順番は先頭が最も内側のS式になってる。
 
     (("if" 914 5 2)
      ("let" 887 3 2)
-     ("defun 860 1 3))
+     ("defun" 860 1 3))
 
 このままでは扱いにくいので、use-sexp-info-accessors と with-places というマクロを定義してあります。
 
-# with-places (place*) object &body body
+### with-places (place*) object &body body
 place に object からデータを取得する関数を指定すると、その関数名（シンボル）をそのデータにローカルに束縛します。
 
     (with-places (first second third) '(foo bar baz)
       (list third second first))
     => (baz bar foo)
 
-# use-sexp-info-accessors &body body
+### use-sexp-info-accessors &body body
 前述の「周辺のS式の情報」に対する、理解しやすい名前のアクセス関数を labels で定義します。
 
     (let ((info '("defun" 860 1 3)))
-      (use-exp-info-accessors
+      (use-sexp-info-accessors
         (values (symbol-of info)
                 (point-of info)
                 (column-of info)
-                (nth-arg info)))
+                (nth-arg info))))
     => "defun"
     => 860
     => 1
     => 3
+
+### 使い方の例
+    (defun my-calc-lisp-indent (info)
+      (use-sexp-info-accessors
+       (with-places (first second third) info
+         (when (and (string= (symbol-of second) "defun")
+                    (= (nth-arg second) 2))
+           ...))))
 
 INFO: この2つのマクロは editor パッケージ内で定義されているが、export されていない。
 
