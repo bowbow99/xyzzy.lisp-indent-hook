@@ -4,7 +4,7 @@
 ;;;;
 ;;;; Author: bowbow99 <bowbow99@gmail.com>
 ;;;; Created: 2009-08-11 13:59:55
-;;;; Updated: 2009-08-11 18:42:09
+;;;; Updated: 2009-08-21 18:40:07
 ;;;;
 
 
@@ -12,7 +12,7 @@
 
 (export '(*lisp-indent-hook*))
 
-(defconstant +lisp-indent-hook-version+ "0.01.00")
+(defconstant +lisp-indent-hook-version+ "0.01.01")
 
 (defvar *lisp-indent-hook* nil
   "*Hook for modifying indentation for specific case.
@@ -45,7 +45,7 @@
               (ignore-errors
                  (while (<= (point) opoint)
                    (incf n)
-                   (forward-sexp 1)))
+                   (forward-sexp 1 t)))
               n)))))
 
 (defun investigate-around (&optional opoint)
